@@ -10,6 +10,10 @@ class BaseEstimator:
     def score(self, X, y):
         """Return the coefficient of determination R^2 of the prediction."""
         raise NotImplementedError("score method is not implemented.")
+    
+    def check_is_fitted(self) -> bool:
+        if not self._is_fitted:
+            raise Exception('This estimator is not fitted.')
 
 class TransformerMixin:
     """Mixin class for all transformers in mini_sklearn."""
@@ -32,3 +36,13 @@ class ClassifierMixin:
     def predict_log_proba(self, X):
         """Predict class log-probabilities."""
         raise NotImplementedError("predict_log_proba method is not implemented.")
+
+class RegressorMixin:
+    """Mixin class for all regressors in mini_sklearn."""
+    
+    def score(self, X, y, sample_weight=None):
+        """Return the coefficient of determination R^2 of the prediction."""
+        y_pred = self.predict(X)
+
+        # TODO: import r2_score
+        return r2_score(y, y_pred, sample_weight=sample_weight)

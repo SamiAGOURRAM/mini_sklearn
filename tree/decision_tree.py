@@ -3,16 +3,36 @@ import numpy as np
 import pandas as pd
 
 class BaseDecisionTree(BaseEstimator):
-    def __init__(self, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, max_features=None, max_leaf_nodes=None):
-        self.criterion = criterion
+    def __init__(self, criterion, max_depth=None, min_samples_split=2):
         self.max_depth = max_depth if max_depth is not None else np.inf
         self.min_samples_split = min_samples_split
-        self.min_samples_leaf = min_samples_leaf
-        self.max_features = max_features
-        self.max_leaf_nodes = max_leaf_nodes
         self.depth = None
+        self.criterion = criterion
 
+    def apply(self, X):
+        pred = np.zeros(X.shape[0], dtype=np.int)
+        for i in range(X.shape[0]):
+            cur_node = 0
+            while self.tree_[cur_node].left_child != -1:
+                if X[i][self.tree_[cur_node].feature] <= self.tree_[cur_node].threshold:
+                    cur_node = self.tree_[cur_node].left_child
+                else:
+                    cur_node = self.tree_[cur_node].right_child
+            pred[i] = cur_node
+        return pred
     
+    @property
+    def feature_importances_(self):
+        importances = np.zeros(self.n_features)
+        for node in self.tree_:
+            if node.left_child != -1:
+                left_child = self.tree_[node.left_child]
+                right_child = self.tree_[node.right_child]
+                importances[node.feature] += (node.n_node * node.impurity
+                                              - left_child.n_node * left_child.impurity
+                                              - right_child.n_node * right_child.impurity)
+        return importances / np.sum(importances)
+
 
 class TreeNode():
     def __init__(self):
@@ -27,11 +47,11 @@ class TreeNode():
 
 class DecisionTreeClassifier(ClassifierMixin, BaseDecisionTree):
     
-    def __init__(self, criterion='gini', max_depth=None, min_samples_split=2, min_samples_leaf=1, max_features=None, max_leaf_nodes=None):
-        if criterion != 'gini' and criterion != 'entropy':
+    def __init__(self, criterion='gini', max_depth=None, min_samples_split=2):
+        if criterion not in ['gini', 'entropy']:
             raise ValueError("The criterion for decision tree classifiers should be either 'gini' or 'criterion'.")
          
-        super().__init__(criterion, max_depth, min_samples_split, min_samples_leaf, max_features, max_leaf_nodes)
+        super().__init__(criterion, max_depth, min_samples_split)
 
     def _gini(self, y_cnt):
         prob = y_cnt / np.sum(y_cnt)
@@ -121,18 +141,6 @@ class DecisionTreeClassifier(ClassifierMixin, BaseDecisionTree):
         self._is_fitted = True
         return self
 
-    def apply(self, X):
-        pred = np.zeros(X.shape[0], dtype=np.int)
-        for i in range(X.shape[0]):
-            cur_node = 0
-            while self.tree_[cur_node].left_child != -1:
-                if X[i][self.tree_[cur_node].feature] <= self.tree_[cur_node].threshold:
-                    cur_node = self.tree_[cur_node].left_child
-                else:
-                    cur_node = self.tree_[cur_node].right_child
-            pred[i] = cur_node
-        return pred
-
     def predict_proba(self, X):
         pred = self.apply(X)
         prob = np.array([self.tree_[p].value for p in pred])
@@ -142,14 +150,96 @@ class DecisionTreeClassifier(ClassifierMixin, BaseDecisionTree):
         pred = self.apply(X)
         return np.array([self.classes_[np.argmax(self.tree_[p].value)] for p in pred])
 
-    @property
-    def feature_importances_(self):
-        importances = np.zeros(self.n_features)
-        for node in self.tree_:
-            if node.left_child != -1:
-                left_child = self.tree_[node.left_child]
-                right_child = self.tree_[node.right_child]
-                importances[node.feature] += (node.n_node * node.impurity
-                                              - left_child.n_node * left_child.impurity
-                                              - right_child.n_node * right_child.impurity)
-        return importances / np.sum(importances)
+
+class DecisionTreeRegressor(RegressorMixin, BaseDecisionTree):
+
+    def __init__(self, criterion='mse', max_depth=None, min_samples_split=2):
+        if criterion not in ['mse', 'friedman_mse']:
+            raise ValueError("The criterion for decision tree classifiers should be either 'mse' or 'friedman_mse'.")
+        
+        super().__init__(criterion, max_depth, min_samples_split)
+
+    
+    def fit(self, X, y):
+        self.n_features = X.shape[1]
+        self.tree_ = []
+        self._build_tree(X, y, 0, None, None)
+
+        self._is_fitted = True
+        return self
+    
+    
+    def _build_tree(self, X, y, cur_depth, parent, is_left):
+        if cur_depth == self.max_depth or np.unique(y).shape[0] == 1 or len(y) < self.min_samples_split:
+            cur_node = TreeNode()
+            cur_node.impurity = np.mean(np.square(y)) - np.square(np.mean(y))
+            cur_node.n_node = X.shape[0]
+            cur_node.value = np.mean(y)
+            cur_id = len(self.tree_)
+            self.tree_.append(cur_node)
+            if parent is not None:
+                if is_left:
+                    self.tree_[parent].left_child = cur_id
+                else:
+                    self.tree_[parent].right_child = cur_id
+
+            if self.depth is None:
+                self.depth = cur_depth
+            else:
+                self.depth = max(cur_depth, self.depth)
+                
+            return
+        best_improvement = -np.inf
+        best_feature = None
+        best_threshold = None
+        best_left_ind = None
+        best_right_ind = None
+        sum_total = np.sum(y)
+        for i in range(X.shape[1]):
+            sum_left = 0
+            sum_right = sum_total
+            n_left = 0
+            n_right = X.shape[0]
+            ind = np.argsort(X[:, i])
+            for j in range(ind.shape[0] - 1):
+                sum_left += y[ind[j]]
+                sum_right -= y[ind[j]]
+                n_left += 1
+                n_right -= 1
+                if j + 1 < ind.shape[0] - 1 and np.isclose(X[ind[j], i], X[ind[j + 1], i]):
+                    continue
+                cur_improvement = self._calc_improvement(sum_left, n_left, sum_right, n_right)
+                if cur_improvement > best_improvement:
+                    best_improvement = cur_improvement
+                    best_feature = i
+                    best_threshold = X[ind[j], i]
+                    best_left_ind = ind[:j + 1]
+                    best_right_ind = ind[j + 1:]
+        cur_node = TreeNode()
+        cur_node.feature = best_feature
+        cur_node.threshold = best_threshold
+        cur_node.impurity = np.mean(np.square(y)) - np.square(np.mean(y))
+        cur_node.n_node = X.shape[0]
+        cur_node.value = np.mean(y)
+        cur_id = len(self.tree_)
+        self.tree_.append(cur_node)
+        if parent is not None:
+            if is_left:
+                self.tree_[parent].left_child = cur_id
+            else:
+                self.tree_[parent].right_child = cur_id
+        if cur_depth < self.max_depth:
+            self._build_tree(X[best_left_ind], y[best_left_ind], cur_depth + 1, cur_id, True)
+            self._build_tree(X[best_right_ind], y[best_right_ind], cur_depth + 1, cur_id, False)
+
+    
+    def _calc_improvement(self, sum_left, n_left, sum_right, n_right):
+        if self.criterion == 'mse':
+            return sum_left * sum_left / n_left + sum_right * sum_right / n_right
+        elif self.criterion == 'friedman_mse':
+            return n_left * n_right * np.square(sum_left / n_left - sum_right / n_right)
+    
+
+    def predict(self, X):
+        pred = self.apply(X)
+        return np.array([self.tree_[p].value for p in pred])

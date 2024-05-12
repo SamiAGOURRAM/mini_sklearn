@@ -44,5 +44,7 @@ class RegressorMixin:
         """Return the coefficient of determination R^2 of the prediction."""
         y_pred = self.predict(X)
 
+        from metrics.regression import r2_score
+        
         # TODO: import r2_score
-        return r2_score(y, y_pred, sample_weight=sample_weight)
+        return r2_score(y, y_pred)

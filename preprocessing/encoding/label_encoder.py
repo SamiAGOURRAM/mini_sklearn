@@ -14,26 +14,15 @@ class LabelEncoder(TransformerMixin, BaseEstimator):
     This transformer should be used to encode target values, *i.e.* `y`, and
     not the input `X`.
 
-    Read more in the :ref:`User Guide <preprocessing_targets>`.
-
-    .. versionadded:: 0.12
-
     Attributes
     ----------
     classes_ : ndarray of shape (n_classes,)
         Holds the label for each class.
 
-    See Also
-    --------
-    OrdinalEncoder : Encode categorical features using an ordinal encoding
-        scheme.
-    OneHotEncoder : Encode categorical features as a one-hot numeric array.
-
     Examples
     --------
     `LabelEncoder` can be used to normalize labels.
 
-    >>> from sklearn.preprocessing import LabelEncoder
     >>> le = LabelEncoder()
     >>> le.fit([1, 2, 2, 6])
     LabelEncoder()
@@ -112,11 +101,3 @@ class LabelEncoder(TransformerMixin, BaseEstimator):
             return np.array([])
 
         return _encode(y, uniques=self.classes_)
-    
-#class LabelEncoder():
-    #def fit(self, y):
-        #self.classes_ = np.unique(y)
-        #return self
-
-    #def transform(self, y):
-        #return np.searchsorted(self.classes_, y)

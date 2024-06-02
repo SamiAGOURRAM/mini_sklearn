@@ -1,8 +1,11 @@
-# mini_sklearn/base/base.py
+# from metrics.regression import r2_score
 
 class BaseEstimator:
     """Base class for all estimators in mini_sklearn."""
-    
+
+    def __init__(self):
+        self._is_fitted = False
+            
     def fit(self, X, y=None):
         """Fit estimator to data."""
         raise NotImplementedError("fit method is not implemented.")
@@ -44,7 +47,4 @@ class RegressorMixin:
         """Return the coefficient of determination R^2 of the prediction."""
         y_pred = self.predict(X)
 
-        from metrics.regression import r2_score
-        
-        # TODO: import r2_score
-        return r2_score(y, y_pred)
+        # return r2_score(y, y_pred)

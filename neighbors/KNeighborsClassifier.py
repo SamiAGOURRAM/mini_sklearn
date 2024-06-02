@@ -17,7 +17,7 @@ class KNeighborsClassifier:
         dist_mat = cdist(X, self._fit_X, metric=self.metric)
         neigh_ind = np.argsort(dist_mat, axis=1)[:, :self.n_neighbors]
         neigh_labels = self._y[neigh_ind]
-        most_common = mode(neigh_labels, axis=1, keepdims=True)[0]
+        most_common = mode(neigh_labels, axis=1)[0]
         return self.classes_[most_common.ravel()]
 
     def predict_proba(self, X):

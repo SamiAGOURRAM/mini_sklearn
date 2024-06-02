@@ -7,7 +7,7 @@ from numpy.testing import assert_array_equal
 X = np.random.rand(100, 5)
 y = np.random.randint(0, 2, 100)
 
-# Split using your function
+# Split using my function
 X_train_custom, X_test_custom, y_train_custom, y_test_custom = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Split using scikit-learn

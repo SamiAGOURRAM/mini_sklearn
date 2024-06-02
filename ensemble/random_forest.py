@@ -25,6 +25,7 @@ class RandomForestClassifier(ClassifierMixin, BaseEstimator):
         self.random_state = random_state
         self.estimators_ = []
         self._is_fitted = False
+        self._estimator_type = "classifier"
 
     def fit(self, X, y):
         """
@@ -135,6 +136,7 @@ class RandomForestRegressor(RegressorMixin, BaseEstimator):
         self.random_state = random_state
         self.estimators_ = []
         self._is_fitted = False
+        self._estimator_type = "regressor"
 
     def fit(self, X, y):
         """

@@ -49,9 +49,6 @@ def clone(estimator, *, safe=True):
     >>> classifier is cloned_classifier
     False
     """
-    if hasattr(estimator, '__sklearn_clone__'):
-        return estimator.__sklearn_clone__()
-
     if safe:
         return copy.deepcopy(estimator)
     else:

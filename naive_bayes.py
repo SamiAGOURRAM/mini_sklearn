@@ -4,10 +4,14 @@ from scipy.special import logsumexp
 
 class BaseNB(BaseEstimator, ClassifierMixin):
     def predict(self, X):
+        self.check_is_fitted()
+
         joint_log_likelihood = self._joint_log_likelihood(X)
         return self.classes_[np.argmax(joint_log_likelihood, axis=1)]
     
     def predict_proba(self, X):
+        self.check_is_fitted()
+
         joint_log_likelihood = self._joint_log_likelihood(X)
         log_prob = joint_log_likelihood - logsumexp(joint_log_likelihood, axis=1)[:, np.newaxis]
         return np.exp(log_prob)
@@ -33,9 +37,13 @@ class GaussianNB(BaseNB):
             self.sigma_[i] = np.var(X_c, axis=0)
             self.class_count_[i] = X_c.shape[0]
         self.class_prior_ = self.class_count_ / np.sum(self.class_count_)
+
+        self._is_fitted = True
         return self
 
     def _joint_log_likelihood(self, X):
+        self.check_is_fitted()
+
         joint_log_likelihood = np.zeros((X.shape[0], len(self.classes_)))
         for i in range(len(self.classes_)):
             p1 = np.log(self.class_prior_[i])
@@ -46,9 +54,10 @@ class GaussianNB(BaseNB):
 
 class BernoulliNB(BaseNB):
     def __init__(self, alpha=1.0):
+        super().__init__()
         self.alpha = alpha
 
-    def fit(self, X, y):
+    def fit(self, X, y):        
         self.classes_, y_train = self._encode(y)
         self.feature_count_ = np.dot(y_train.T, X)
         self.class_count_ = y_train.sum(axis=0)
@@ -57,9 +66,13 @@ class BernoulliNB(BaseNB):
         self.feature_log_prob_ = (np.log(smoothed_fc) -
                                   np.log(smoothed_cc.reshape(-1, 1)))
         self.class_log_prior_ = np.log(self.class_count_) - np.log(self.class_count_.sum())
+
+        self._is_fitted = True
         return self
     
     def _joint_log_likelihood(self, X):
+        self.check_is_fitted()
+
         return (np.dot(X, self.feature_log_prob_.T) +
                 np.dot(1 - X, np.log(1 - np.exp(self.feature_log_prob_)).T) +
                 self.class_log_prior_)
@@ -67,6 +80,7 @@ class BernoulliNB(BaseNB):
 
 class MultinomialNB(BaseNB):
     def __init__(self, alpha=1.0):
+        super().__init__()
         self.alpha = alpha
 
     def fit(self, X, y):
@@ -78,7 +92,11 @@ class MultinomialNB(BaseNB):
         self.feature_log_prob_ = (np.log(smoothed_fc) -
                                   np.log(smoothed_cc.reshape(-1, 1)))
         self.class_log_prior_ = np.log(self.class_count_) - np.log(self.class_count_.sum())
+
+        self._is_fitted = True
         return self
 
     def _joint_log_likelihood(self, X):
+        self.check_is_fitted()
+
         return np.dot(X, self.feature_log_prob_.T) + self.class_log_prior_

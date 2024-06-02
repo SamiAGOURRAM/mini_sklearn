@@ -1,9 +1,8 @@
 from scipy.spatial.distance import cdist
 from scipy.stats import mode
 import numpy as np
-from base.base import BaseEstimator, ClassifierMixin
 
-class KNeighborsClassifier(ClassifierMixin, BaseEstimator):
+class KNeighborsClassifier:
     def __init__(self, n_neighbors=5, metric='euclidean'):
         self.n_neighbors = n_neighbors
         self.metric = metric
@@ -29,4 +28,3 @@ class KNeighborsClassifier(ClassifierMixin, BaseEstimator):
             counts = np.bincount(self._y[indices], minlength=len(self.classes_))
             proba[i, :] = counts / self.n_neighbors
         return proba
-

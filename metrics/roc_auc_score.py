@@ -1,6 +1,6 @@
 
-from roc_curve import roc_curve
-from auc import auc
+from .roc_curve import roc_curve
+from .auc import auc
 
 def roc_auc_score(y_true, y_score):
     """Compute Area Under the Receiver Operating Characteristic Curve (ROC AUC)

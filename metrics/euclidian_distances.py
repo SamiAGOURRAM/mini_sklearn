@@ -45,6 +45,8 @@ def euclidean_distances(X, Y=None, *, squared=False):
     distances = -2 * np.dot(X, Y.T) + np.sum(X ** 2, axis=1)[:, np.newaxis] + np.sum(Y ** 2, axis=1)
 
     if not squared:
+        # Clip distances to ensure they are non-negative
+        distances = np.clip(distances, 0, None)
         distances = np.sqrt(distances)
-
+    
     return distances

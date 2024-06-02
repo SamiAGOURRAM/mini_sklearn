@@ -1,5 +1,5 @@
 import numpy as np
-from cosine_similarity import cosine_similarity
+from .cosine_similarity import cosine_similarity
 
 
 def cosine_distances(X, Y=None):

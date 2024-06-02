@@ -12,6 +12,3 @@ def r2_score(y_true, y_pred):
     numerator = np.sum(np.square((y_true - y_pred)))
     denominator = np.sum(np.square((y_true - np.mean(y_true))))
     return 1 - numerator / denominator
-
-def median_absolute_error(y_true, y_pred):
-    return np.median(np.abs(y_true - y_pred))

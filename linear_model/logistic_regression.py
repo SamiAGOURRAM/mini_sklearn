@@ -103,3 +103,14 @@ class LogisticRegression(ClassifierMixin, BaseEstimator):
         
         # Predict class labels based on probability threshold of 0.5
         return (prob >= 0.5).astype(int)
+    def get_params(self, deep=True):
+        """
+        Get parameters for this estimator.
+
+        Parameters:
+            deep (bool, optional): If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+        Returns:
+            dict: Parameter names mapped to their values.
+        """
+        return {}

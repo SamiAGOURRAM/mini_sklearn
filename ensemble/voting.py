@@ -13,6 +13,7 @@ class VotingClassifier(ClassifierMixin, BaseEstimator):
     def fit(self, X, y):
         self.classes_, y_train = np.unique(y, return_inverse=True)
         self.estimators_ = [deepcopy(est).fit(X, y_train) for _, est in self.estimators]
+        self._is_fitted = True
         return self
 
     def transform(self, X):
@@ -43,6 +44,7 @@ class VotingRegressor(RegressorMixin, BaseEstimator):
 
     def fit(self, X, y):
         self.estimators_ = [deepcopy(est).fit(X, y) for _, est in self.estimators]
+        self._is_fitted = True
         return self
 
     def transform(self, X):

@@ -25,6 +25,7 @@ class StackingClassifier(RegressorMixin, BaseEstimator):
         X_meta = np.hstack(predictions)
         self.final_estimator_ = clone(self.final_estimator)
         self.final_estimator_.fit(X_meta, y)
+        self._is_fitted = True
         return self
 
     def transform(self, X):
@@ -57,6 +58,7 @@ class StackingRegressor(RegressorMixin, BaseEstimator):
         ]
         X_meta = np.hstack(predictions)
         self.final_estimator_ = clone(self.final_estimator).fit(X_meta, y)
+        self._is_fitted = True
         return self
 
     def transform(self, X):

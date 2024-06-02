@@ -30,7 +30,7 @@ class BaseDecisionTree(BaseEstimator):
         Returns:
             np.ndarray: The leaf index for each sample.
         """
-        pred = np.zeros(X.shape[0], dtype=np.int)
+        pred = np.zeros(X.shape[0], dtype=int)
         for i in range(X.shape[0]):
             cur_node = 0
             while self.tree_[cur_node].left_child != -1:

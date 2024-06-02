@@ -7,6 +7,7 @@ class BaseEstimator:
         self._is_fitted = False
             
     def fit(self, X, y=None):
+        
         """Fit estimator to data."""
         raise NotImplementedError("fit method is not implemented.")
 

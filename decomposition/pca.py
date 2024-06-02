@@ -13,6 +13,7 @@ class PCA(BaseEstimator, TransformerMixin):
         self.components_ = Vt[:self.n_components]
         self.explained_variance_ = (S[:self.n_components] ** 2) / (X.shape[0] - 1)
         self.explained_variance_ratio_ = self.explained_variance_ / np.sum(S ** 2 / (X.shape[0] - 1))
+        self._is_fitted = True
         return self
 
     def transform(self, X):

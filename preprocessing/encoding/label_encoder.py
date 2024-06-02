@@ -73,6 +73,7 @@ class LabelEncoder(TransformerMixin, BaseEstimator):
         """
         y = column_or_1d(y, warn=True)
         self.classes_ = _unique(y)
+        self._is_fitted = True
         return self
 
     def fit_transform(self, y):

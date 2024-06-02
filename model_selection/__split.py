@@ -86,3 +86,46 @@ class StratifiedKFold(BaseKFold):
 
     def split(self, X, y):
         return super().split(X, y)
+    
+
+def train_test_split(*arrays, test_size=0.25, random_state=None, shuffle=True):
+    """
+    Split arrays or matrices into random train and test subsets.
+
+    Parameters:
+        *arrays : sequence of indexables with same length / shape[0]
+            Allowed inputs are lists, numpy arrays, scipy-sparse
+            matrices or pandas dataframes.
+        test_size : float or int, default=0.25
+            If float, should be between 0.0 and 1.0 and represent the
+            proportion of the dataset to include in the test split. If
+            int, represents the absolute number of test samples.
+        random_state : int or None, default=None
+            Controls the shuffling applied to the data before applying the split.
+            Pass an int for reproducible output across multiple function calls.
+        shuffle : bool, default=True
+            Whether or not to shuffle the data before splitting. If shuffle=False
+            then stratify must be None.
+
+    Returns:
+        splitting : list, length=2 * len(arrays)
+            List containing train-test split of inputs.
+    """
+    n_samples = len(arrays[0])
+    if random_state is not None:
+        np.random.seed(random_state)
+
+    indices = np.arange(n_samples)
+    if shuffle:
+        np.random.shuffle(indices)
+
+    if isinstance(test_size, float):
+        test_size = int(n_samples * test_size)
+
+    test_indices = indices[:test_size]
+    train_indices = indices[test_size:]
+
+    train_arrays = [np.take(arr, train_indices, axis=0) for arr in arrays]
+    test_arrays = [np.take(arr, test_indices, axis=0) for arr in arrays]
+
+    return [*train_arrays, *test_arrays]

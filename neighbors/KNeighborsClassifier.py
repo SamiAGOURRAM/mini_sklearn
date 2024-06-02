@@ -11,6 +11,7 @@ class KNeighborsClassifier:
         self._fit_X = X
         self._fit_y = y
         self.classes_, self._y = np.unique(y, return_inverse=True)
+        self._is_fitted = True
         return self
 
     def predict(self, X):

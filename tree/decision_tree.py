@@ -1,6 +1,6 @@
 from base.base import BaseEstimator, ClassifierMixin, RegressorMixin
 import numpy as np
-import pandas as pd
+
 
 class BaseDecisionTree(BaseEstimator):
     def __init__(self, criterion, max_depth=None, min_samples_split=2, max_features=None):

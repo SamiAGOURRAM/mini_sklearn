@@ -24,10 +24,10 @@ class OneHotEncoder(TransformerMixin, BaseEstimator):
         """
         encoded_columns = []
         for i, column in enumerate(X.T):
-            category_indices = {category: idx for idx, category in enumerate(self.categories_[i])}
-            encoded_column = np.zeros((X.shape[0], len(self.categories_[i])))
+            categories = self.categories_[i]
+            encoded_column = np.zeros((X.shape[0], len(categories)))
             for j, value in enumerate(column):
-                encoded_column[j, category_indices[value]] = 1
+                encoded_column[j, categories == value] = 1
             encoded_columns.append(encoded_column)
         
         return np.hstack(encoded_columns)
@@ -44,10 +44,9 @@ class OneHotEncoder(TransformerMixin, BaseEstimator):
         """
         return self.fit(X).transform(X)
 
-# Example usage:
+# Example usage
 if __name__ == "__main__":
     X = np.array([['cat', 'A'], ['dog', 'B'], ['cat', 'A'], ['bird', 'B']])
     one_hot_encoder = OneHotEncoder()
     X_encoded = one_hot_encoder.fit_transform(X)
     print(X_encoded)
-

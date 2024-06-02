@@ -18,33 +18,6 @@ class LabelEncoder(TransformerMixin, BaseEstimator):
     ----------
     classes_ : ndarray of shape (n_classes,)
         Holds the label for each class.
-
-    Examples
-    --------
-    `LabelEncoder` can be used to normalize labels.
-
-    >>> le = LabelEncoder()
-    >>> le.fit([1, 2, 2, 6])
-    LabelEncoder()
-    >>> le.classes_
-    array([1, 2, 6])
-    >>> le.transform([1, 1, 2, 6])
-    array([0, 0, 1, 2]...)
-    >>> le.inverse_transform([0, 0, 1, 2])
-    array([1, 1, 2, 6])
-
-    It can also be used to transform non-numerical labels (as long as they are
-    hashable and comparable) to numerical labels.
-
-    >>> le = LabelEncoder()
-    >>> le.fit(["paris", "paris", "tokyo", "amsterdam"])
-    LabelEncoder()
-    >>> list(le.classes_)
-    ['amsterdam', 'paris', 'tokyo']
-    >>> le.transform(["tokyo", "tokyo", "paris"])
-    array([2, 2, 1]...)
-    >>> list(le.inverse_transform([2, 2, 1]))
-    ['tokyo', 'tokyo', 'paris']
     """
 
     def fit(self, y):

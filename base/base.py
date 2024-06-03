@@ -1,4 +1,4 @@
-# from metrics.regression import r2_score
+from metrics.regression import r2_score
 
 class BaseEstimator:
     """Base class for all estimators in mini_sklearn."""
@@ -44,4 +44,4 @@ class RegressorMixin:
         """Return the coefficient of determination R^2 of the prediction."""
         y_pred = self.predict(X)
 
-        # return r2_score(y, y_pred)
+        return r2_score(y, y_pred)

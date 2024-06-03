@@ -58,3 +58,33 @@ To use this library, simply clone this repository and import the desired modules
 
 ```bash
 git clone https://github.com/yourusername/custom_ml_library.git
+```
+
+
+## Usage
+
+Here are some examples of how to use the various modules in this library.
+
+### StandardScaler
+
+```python
+from preprocessing import StandardScaler
+import numpy as np
+
+X = np.array([[1, 2], [3, 4], [5, 6]])
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+print(X_scaled)
+```
+### Random forest regressor
+```python
+from ensemble import RandomForestRegressor
+import numpy as np
+
+X = np.random.rand(100, 5)
+y = np.random.rand(100)
+rf = RandomForestRegressor(n_estimators=10)
+rf.fit(X, y)
+predictions = rf.predict(X)
+print(predictions)
+```

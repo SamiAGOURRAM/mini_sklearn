@@ -1,6 +1,7 @@
 import numpy as np
+from base.base import BaseEstimator, ClassifierMixin
 
-class NeuralNetwork:
+class NeuralNetwork(ClassifierMixin, BaseEstimator):
     def __init__(self, layers, learning_rate=0.01, epochs=1000):
         """
         Initialize the neural network.

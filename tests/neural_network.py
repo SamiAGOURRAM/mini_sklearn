@@ -29,7 +29,7 @@ nn_precision = precision_score(y_test, nn_predictions, average='weighted')
 nn_recall = recall_score(y_test, nn_predictions, average='weighted')
 nn_f1 = f1_score(y_test, nn_predictions, average='weighted')
 
-print(f"Custom Neural Network - Fit Time: {nn_fit_time:.4f}s, Accuracy: {nn_accuracy:.4f}, Precision: {nn_precision:.4f}, Recall: {nn_recall:.4f}, F1 Score: {nn_f1:.4f}")
+print(f"Custom Neural Network \n- Fit Time: {nn_fit_time:.4f}s, \nAccuracy: {nn_accuracy:.4f}, \nPrecision: {nn_precision:.4f}, \nRecall: {nn_recall:.4f}, \nF1 Score: {nn_f1:.4f}")
 
 # Create and train scikit-learn neural network
 sk_nn = MLPClassifier(hidden_layer_sizes=(10,), max_iter=10000, learning_rate_init=0.01, random_state=42)
@@ -46,4 +46,4 @@ sk_nn_precision = precision_score(y_test, sk_nn_predictions, average='weighted')
 sk_nn_recall = recall_score(y_test, sk_nn_predictions, average='weighted')
 sk_nn_f1 = f1_score(y_test, sk_nn_predictions, average='weighted')
 
-print(f"Scikit-learn Neural Network - Fit Time: {sk_nn_fit_time:.4f}s, Accuracy: {sk_nn_accuracy:.4f}, Precision: {sk_nn_precision:.4f}, Recall: {sk_nn_recall:.4f}, F1 Score: {sk_nn_f1:.4f}")
+print(f"Scikit-learn Neural Network \n- Fit Time: {sk_nn_fit_time:.4f}s, \nAccuracy: {sk_nn_accuracy:.4f}, \nPrecision: {sk_nn_precision:.4f}, \nRecall: {sk_nn_recall:.4f}, \nF1 Score: {sk_nn_f1:.4f}")

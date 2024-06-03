@@ -2,11 +2,11 @@ from utils.__clone import clone
 
 from model_selection.__validation import cross_val_predict
 
-from base.base import RegressorMixin, BaseEstimator
+from base.base import RegressorMixin, BaseEstimator, ClassifierMixin
 
 import numpy as np
 
-class StackingClassifier(RegressorMixin, BaseEstimator):
+class StackingClassifier(ClassifierMixin, BaseEstimator):
     def __init__(self, estimators, final_estimator):
         self.estimators = estimators
         self.final_estimator = final_estimator

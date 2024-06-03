@@ -57,7 +57,12 @@ This project is a custom implementation of various machine learning algorithms a
 To use this library, simply clone this repository and import the desired modules in your Python scripts.
 
 ```bash
-git clone https://github.com/yourusername/custom_ml_library.git
+git clone https://github.com/SamiAGOURRAM/mini_sklearn
+```
+
+You can also download the Pypi package using the command:
+```bash
+pip install um6p-CC-learn
 ```
 
 

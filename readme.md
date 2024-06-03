@@ -36,9 +36,7 @@ This project is a custom implementation of various machine learning algorithms a
 - **StackingRegressor**: Stacking ensemble for regression.
 
 ### neural_network
-- **NeuralNetwork**: A basic implementation of a feedforward neural network.
-- **MLPClassifier**: Multi-layer perceptron classifier.
-- **MLPRegressor**: Multi-layer perceptron regressor.
+- **NeuralNetwork**: A basic implementation of a backpropagation multilayer perceptron.
 
 ### model_selection
 - **train_test_split**: Split arrays or matrices into random train and test subsets.

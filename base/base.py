@@ -23,12 +23,8 @@ class TransformerMixin:
     """Mixin class for all transformers in mini_sklearn."""
     
     def fit_transform(self, X, y=None):
-        """Fit to data, then transform it."""
-        raise NotImplementedError("fit_transform method is not implemented.")
-
-    def transform(self, X):
-        """Transform the data."""
-        raise NotImplementedError("transform method is not implemented.")
+        self.fit(X)
+        return self.transform(X)
 
 class ClassifierMixin:
     """Mixin class for all classifiers in mini_sklearn."""

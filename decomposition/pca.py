@@ -6,7 +6,7 @@ class PCA(BaseEstimator, TransformerMixin):
     def __init__(self, n_components=2):
         self.n_components = n_components
 
-    def fit(self, X):
+    def fit(self, X, y=None):
         self.mean_ = np.mean(X, axis=0)
         X_centered = X - self.mean_
         U, S, Vt = svd(X_centered, full_matrices=False)
@@ -22,7 +22,3 @@ class PCA(BaseEstimator, TransformerMixin):
 
     def inverse_transform(self, X):
         return np.dot(X, self.components_) + self.mean_
-
-    def fit_transform(self, X):
-        self.fit(X)
-        return self.transform(X)

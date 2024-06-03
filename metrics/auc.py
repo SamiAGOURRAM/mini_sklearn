@@ -24,18 +24,6 @@ def auc(x, y):
     Notes
     -----
     This function assumes that x is sorted in increasing order.
-
-    References
-    ----------
-    .. [1] Hanley, J.A. and McNeil, B.J. (1982). "The meaning and use of the
-           area under a receiver operating characteristic (ROC) curve."
-           Radiology, 143(1), pp. 29-36.
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> auc([1, 2, 3], [4, 5, 6])
-    2.0
     """
     # Check for consistent length of x and y
     if len(x) != len(y):

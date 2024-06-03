@@ -33,9 +33,6 @@ def _check_sample_weight(sample_weight, X):
 
 
 
-
-# mini_sklearn/utils/validation.py
-
 def _check_partial_fit_first_call(estimator, classes):
     """Check if partial_fit is called for the first time.
 

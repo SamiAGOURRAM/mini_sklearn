@@ -24,18 +24,6 @@ def euclidean_distances(X, Y=None, *, squared=False):
                 (n_samples_X, n_samples_X)
         Array containing the pairwise Euclidean distances. If `squared=True`,
         the array contains the squared distances.
-
-    Examples
-    --------
-    >>> from sklearn.metrics.pairwise import euclidean_distances
-    >>> X = [[0, 0], [1, 1]]
-    >>> euclidean_distances(X, X)
-    array([[0.        , 1.41421356],
-           [1.41421356, 0.        ]])
-
-    >>> euclidean_distances(X, X, squared=True)
-    array([[0., 2.],
-           [2., 0.]])
     """
     # Check if Y is provided
     if Y is None:

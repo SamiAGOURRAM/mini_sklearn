@@ -20,7 +20,7 @@ class SimpleImputer(TransformerMixin, BaseEstimator):
         elif self.strategy == "median":
             self.statistics_ = np.nanmedian(X, axis=0)
         elif self.strategy == "most_frequent":
-            self.statistics_ = mode(X, axis=0, nan_policy='omit', keepdims=True)[0].squeeze()
+            self.statistics_ = mode(X, axis=0, nan_policy='omit')[0].squeeze()
         elif self.strategy == "constant":
             self.statistics_ = np.full(X.shape[1], self.fill_value)
         self._is_fitted = True

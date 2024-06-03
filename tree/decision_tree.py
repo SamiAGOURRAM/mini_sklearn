@@ -84,6 +84,7 @@ class DecisionTreeClassifier(ClassifierMixin, BaseDecisionTree):
             min_samples_split (int): The minimum number of samples required to split an internal node.
             max_features (int, float, str or None): The number of features to consider when looking for the best split.
         """
+        self._estimator_type = "classifier"
         if criterion not in ['gini', 'entropy']:
             raise ValueError("The criterion for decision tree classifiers should be either 'gini' or 'entropy'.")
          
@@ -266,6 +267,7 @@ class DecisionTreeRegressor(RegressorMixin, BaseDecisionTree):
             min_samples_split (int): The minimum number of samples required to split an internal node.
             max_features (int, float, str or None): The number of features to consider when looking for the best split.
         """
+        self._estimator_type = "regressor"
         if criterion not in ['mse', 'friedman_mse']:
             raise ValueError("The criterion for decision tree classifiers should be either 'mse' or 'friedman_mse'.")
         

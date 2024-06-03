@@ -18,6 +18,6 @@ def cross_val_predict(estimator, X, y, method="predict"):
         est.fit(X[train], y[train])
         predictions.extend(getattr(est, method)(X[test]))
         indices.extend(test)
-    inv_indices = np.empty(len(indices), dtype=np.int)
+    inv_indices = np.empty(len(indices), dtype=int)
     inv_indices[indices] = np.arange(len(indices))
     return np.array(predictions)[inv_indices]

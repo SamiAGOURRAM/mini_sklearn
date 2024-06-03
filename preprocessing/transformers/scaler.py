@@ -1,6 +1,7 @@
 import numpy as np
+from base.base import TransformerMixin, BaseEstimator
 
-class StandardScaler:
+class StandardScaler(TransformerMixin, BaseEstimator):
     """Standardize features by removing the mean and scaling to unit variance.
 
     Standardization of a dataset is a common requirement for many machine learning estimators. 
@@ -32,7 +33,7 @@ class StandardScaler:
            [ 1.,  1.]])
     """
 
-    def fit(self, X):
+    def fit(self, X, y=None):
         """Compute the mean and standard deviation for each feature in X.
 
         Parameters:
@@ -62,7 +63,7 @@ class StandardScaler:
     
 
 
-class MinMaxScaler:
+class MinMaxScaler(TransformerMixin, BaseEstimator):
     """Transforms features by scaling each feature to a given range.
 
     This scaler scales each feature to a given range. This range is determined
@@ -104,7 +105,7 @@ class MinMaxScaler:
     def __init__(self, feature_range=(0, 1)):
         self.feature_range = feature_range
 
-    def fit(self, X):
+    def fit(self, X, y=None):
         """Compute the minimum and maximum values for each feature in X.
 
         Parameters:
